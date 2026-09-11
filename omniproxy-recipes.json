@@ -1,0 +1,15 @@
+{
+  "format_namespace": "omniproxy.com",
+  "format": "omniproxy.recipe-package",
+  "format_version": 1,
+  "package_id": "official.core",
+  "package_version": 1,
+  "license": "Apache-2.0",
+  "required_features": ["mapping.v1"],
+  "optional_features": [],
+  "extensions": {},
+  "virtual_profiles": [],
+  "mappings": ["recipes/minimal.json"],
+  "provider_patches": [],
+  "tests": []
+}

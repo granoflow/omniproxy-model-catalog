@@ -1,0 +1,23 @@
+{
+  "format_namespace": "omniproxy.com",
+  "format": "omniproxy.recipe",
+  "format_version": 1,
+  "recipe_id": "official.deepseek-v4-to-gpt-5.6-sol",
+  "recipe_version": 1,
+  "license": "Apache-2.0",
+  "required_features": ["mapping.v1"],
+  "optional_features": [],
+  "extensions": {},
+  "virtual_profile": {
+    "profile_id": "gpt-5.6-sol",
+    "display_name": "GPT-5.6 Sol",
+    "protocol_surfaces": ["openai_chat"]
+  },
+  "selector": {
+    "model": {"kind": "exact", "value": "deepseek/deepseek-v4-pro"},
+    "constraints": {"source_id": "", "provider_profile": "deepseek", "runtime_kind": "", "artifact_kind": ""}
+  },
+  "mapping": {"protocol_surface": "openai_chat", "request": [], "response": [], "stream": [], "errors": []},
+  "provider_patches": [],
+  "tests": []
+}
