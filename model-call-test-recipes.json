@@ -1,0 +1,598 @@
+{
+  "schema_version": 2,
+  "release_version": "2026.09.01.1",
+  "remote_debug_recipes": [
+    {
+      "recipe_id": "remote.openai-gpt-5.6.v1",
+      "recipe_version": 1,
+      "label": "OpenAI GPT-5.6",
+      "bare_model_matchers": ["gpt-5.6", "*/gpt-5.6", "gpt-5.6-sol", "*/gpt-5.6-sol", "gpt-5.6-terra", "*/gpt-5.6-terra", "gpt-5.6-luna", "*/gpt-5.6-luna"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output"],
+      "lifecycle": "current",
+      "official_sources": ["https://developers.openai.com/api/docs/models"],
+      "verified_at": "2026-08-31",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.openai-text.v1",
+      "recipe_version": 1,
+      "label": "OpenAI text and reasoning",
+      "bare_model_matchers": ["gpt-4.1*", "*/gpt-4.1*", "gpt-4.5*", "*/gpt-4.5*", "gpt-5*", "*/gpt-5*", "o1*", "*/o1*", "o3*", "*/o3*", "o4*", "*/o4*"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output"],
+      "lifecycle": "current",
+      "official_sources": ["https://developers.openai.com/api/docs/guides/text"],
+      "verified_at": "2026-08-21",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.anthropic-text.v1",
+      "recipe_version": 1,
+      "label": "Claude messages",
+      "bare_model_matchers": ["claude-*", "*/claude-*"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output"],
+      "lifecycle": "current",
+      "official_sources": ["https://docs.anthropic.com/en/api/messages"],
+      "verified_at": "2026-08-21",
+      "variants": [
+        {
+          "protocol_surface": "anthropic_messages",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "max_tokens": 128, "messages": [{"role": "user", "content": "Hello"}]},
+          "output_mapping": {"kind": "text", "pointer": "/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.gemini-text.v1",
+      "recipe_version": 2,
+      "label": "Gemini generate content",
+      "bare_model_matchers": ["gemini-*-pro", "*/gemini-*-pro", "gemini-*-pro-preview*", "*/gemini-*-pro-preview*", "gemini-*-flash", "*/gemini-*-flash", "gemini-*-flash-lite", "*/gemini-*-flash-lite"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "grounding"],
+      "lifecycle": "current",
+      "official_sources": ["https://ai.google.dev/gemini-api/docs/text-generation"],
+      "verified_at": "2026-09-01",
+      "variants": [
+        {
+          "protocol_surface": "gemini_native",
+          "body_mode": "json",
+          "request_template": {"contents": [{"parts": [{"text": "Hello"}]}]},
+          "output_mapping": {"kind": "text", "pointer": "/candidates/0/content/parts/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.deepseek-text.v1",
+      "recipe_version": 1,
+      "label": "DeepSeek text and reasoning",
+      "bare_model_matchers": ["deepseek-*", "*/deepseek-*"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output", "fim"],
+      "lifecycle": "current",
+      "official_sources": ["https://api-docs.deepseek.com/"],
+      "verified_at": "2026-08-31",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        },
+        {
+          "protocol_surface": "anthropic_messages",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "max_tokens": 128, "messages": [{"role": "user", "content": "Hello"}]},
+          "output_mapping": {"kind": "text", "pointer": "/content/0/text"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.qwen-text.v1",
+      "recipe_version": 1,
+      "label": "Qwen text and reasoning",
+      "bare_model_matchers": [
+        "qwen-max*", "qwen-plus*", "qwen-turbo*", "qwen3-max*", "qwen3-coder*",
+        "qwen3-next*", "qwen3-*-instruct*", "qwen3.8-max*", "qwen3.8-flash*",
+        "qwen3.7-max*", "qwen3.7-plus*", "qwen3.7-flash*"
+      ],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output", "search"],
+      "lifecycle": "current",
+      "official_sources": [
+        "https://help.aliyun.com/en/model-studio/qwen-api-via-openai-chat-completions",
+        "https://help.aliyun.com/en/model-studio/qwen-api-via-openai-responses",
+        "https://help.aliyun.com/en/model-studio/web-search"
+      ],
+      "verified_at": "2026-09-01",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": [
+        {
+          "provider_profile": "qwen",
+          "protocol_surface": "openai_chat",
+          "request_template_patch": {"enable_search": true},
+          "output_mapping_patch": {},
+          "official_sources": ["https://help.aliyun.com/en/model-studio/web-search"]
+        },
+        {
+          "provider_profile": "qwen",
+          "protocol_surface": "openai_responses",
+          "request_template_patch": {"tools": [{"type": "web_search"}]},
+          "output_mapping_patch": {},
+          "official_sources": ["https://help.aliyun.com/en/model-studio/web-search"]
+        }
+      ]
+    },
+    {
+      "recipe_id": "remote.mimo-text.v1",
+      "recipe_version": 1,
+      "label": "MiMo text and reasoning",
+      "bare_model_matchers": ["mimo-v*-pro", "mimo-v2.5"],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output"],
+      "lifecycle": "current",
+      "official_sources": ["https://platform.xiaomimimo.com/"],
+      "verified_at": "2026-09-01",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        },
+        {
+          "protocol_surface": "anthropic_messages",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "max_tokens": 128, "messages": [{"role": "user", "content": "Hello"}]},
+          "output_mapping": {"kind": "text", "pointer": "/content/0/text"}
+        }
+      ],
+      "provider_patches": []
+    },
+    {
+      "recipe_id": "remote.major-compatible-text.v1",
+      "recipe_version": 1,
+      "label": "Major vendor OpenAI-compatible text",
+      "bare_model_matchers": [
+        "grok-3*", "grok-4*", "grok-build*", "glm-4*", "glm-5*", "kimi-*", "minimax-m*",
+        "hunyuan-t1*", "hunyuan-a13b*", "hunyuan-large*", "hunyuan-lite*",
+        "hunyuan-standard*", "hunyuan-turbo*"
+      ],
+      "maintenance_class": "core_provider",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output", "search"],
+      "lifecycle": "current",
+      "official_sources": [
+        "https://api-docs.deepseek.com/",
+        "https://docs.x.ai/docs/api-reference",
+        "https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope"
+      ],
+      "verified_at": "2026-08-21",
+      "variants": [
+        {
+          "protocol_surface": "openai_responses",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "input": "Hello"},
+          "output_mapping": {"kind": "text", "pointer": "/output/0/content/0/text"}
+        },
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": [
+        {
+          "provider_profile": "zhipu",
+          "protocol_surface": "openai_chat",
+          "request_template_patch": {"enable_search": true},
+          "output_mapping_patch": {},
+          "official_sources": ["https://docs.bigmodel.cn/cn/guide/tools/web-search"]
+        },
+        {
+          "provider_profile": "kimi",
+          "protocol_surface": "openai_chat",
+          "request_template_patch": {"enable_search": true},
+          "output_mapping_patch": {},
+          "official_sources": ["https://platform.kimi.com/docs/api/overview"]
+        }
+      ]
+    },
+    {
+      "recipe_id": "remote.open-weight-compatible-text.v1",
+      "recipe_version": 1,
+      "label": "Open-weight OpenAI-compatible text",
+      "bare_model_matchers": ["*/gpt-oss-*", "gpt-oss-*", "*/Llama-*", "Llama-*", "*/Mistral-*", "Mistral-*", "*/Mixtral-*", "Mixtral-*", "*/Gemma-*", "Gemma-*", "*/Phi-*", "Phi-*", "*/Nemotron-*", "Nemotron-*", "*/Granite-*", "Granite-*", "*/OLMo-*", "OLMo-*", "*/Molmo-*", "Molmo-*"],
+      "maintenance_class": "core_open_weight",
+      "capabilities": ["text", "vision", "reasoning", "tools", "structured_output"],
+      "lifecycle": "current",
+      "official_sources": ["https://platform.openai.com/docs/api-reference/chat"],
+      "verified_at": "2026-08-21",
+      "variants": [
+        {
+          "protocol_surface": "openai_chat",
+          "body_mode": "json",
+          "request_template": {"model": "{{model}}", "messages": [{"role": "user", "content": "Hello"}], "stream": false},
+          "output_mapping": {"kind": "chat_text", "pointer": "/choices/0/message/content"}
+        }
+      ],
+      "provider_patches": []
+    }
+  ],
+  "recipes": [
+    {
+      "recipe_id": "model.gemma-4-chat.v1",
+      "recipe_version": 1,
+      "label": "Gemma 4 对话",
+      "scope": { "kind": "family", "value": "gemma-4" },
+      "capability": "chat",
+      "source_kind": "official",
+      "official_source": "https://ai.google.dev/gemma/docs/core",
+      "adapter": { "id": "local.chat.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct", "qat_instruct"], "inheritable": true },
+      "required_inputs": ["messages"],
+      "request_template": { "messages": "{{messages}}", "max_tokens": 32, "temperature": 0.2, "stream": true },
+      "load_options": {},
+      "output_mapping": { "kind": "chat_text", "pointer": "/choices/0/message/content" },
+      "supported_parameters": ["max_tokens", "stream", "temperature"]
+    },
+    {
+      "recipe_id": "model.hunyuan-mt2.v1",
+      "recipe_version": 1,
+      "label": "Hunyuan MT2 翻译",
+      "scope": { "kind": "family", "value": "hunyuan-mt2" },
+      "capability": "translation",
+      "source_kind": "official",
+      "official_source": "https://github.com/Tencent-Hunyuan/Hunyuan-MT",
+      "adapter": { "id": "local.translation.hymt2", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": true },
+      "required_inputs": ["source_language", "target_language", "text"],
+      "request_template": { "source_language": "{{source_language}}", "target_language": "{{target_language}}", "text": "{{text}}" },
+      "load_options": {},
+      "output_mapping": { "kind": "translation_text", "pointer": "/translation" },
+      "supported_parameters": []
+    },
+    {
+      "recipe_id": "model.embeddinggemma-300m-8bit.v1",
+      "recipe_version": 1,
+      "label": "EmbeddingGemma 300M",
+      "scope": { "kind": "model", "value": "mlx-community/embeddinggemma-300m-8bit" },
+      "capability": "embedding",
+      "source_kind": "official",
+      "official_source": "https://ai.google.dev/gemma/docs/embeddinggemma",
+      "adapter": { "id": "local.embedding.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["base", "instruct"], "inheritable": false },
+      "required_inputs": ["text"],
+      "request_template": { "input": "{{text}}", "dimensions": 768 },
+      "load_options": {},
+      "output_mapping": { "kind": "embedding", "pointer": "/data/0/embedding" },
+      "supported_parameters": ["dimensions"]
+    },
+    {
+      "recipe_id": "model.qwen3-asr-1.7b-8bit.v1",
+      "recipe_version": 1,
+      "label": "Qwen3 ASR 1.7B",
+      "scope": { "kind": "model", "value": "mlx-community/Qwen3-ASR-1.7B-8bit" },
+      "capability": "speech",
+      "source_kind": "official",
+      "official_source": "https://github.com/QwenLM/Qwen3-ASR",
+      "adapter": { "id": "local.speech.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["audio"],
+      "request_template": { "audio": "{{audio}}", "language": "auto", "prompt": "" },
+      "load_options": {},
+      "output_mapping": { "kind": "transcription", "pointer": "/text" },
+      "supported_parameters": ["language", "prompt"]
+    },
+    {
+      "recipe_id": "model.qwen3-tts-customvoice-8bit.v1",
+      "recipe_version": 1,
+      "label": "Qwen3 TTS CustomVoice",
+      "scope": { "kind": "model", "value": "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit" },
+      "capability": "tts",
+      "source_kind": "official",
+      "official_source": "https://github.com/QwenLM/Qwen3-TTS",
+      "adapter": { "id": "local.tts.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["text"],
+      "request_template": { "input": "{{text}}", "voice": "Vivian", "language": "Chinese", "instruct": "" },
+      "load_options": {},
+      "output_mapping": { "kind": "audio", "pointer": "/audio" },
+      "supported_parameters": ["voice", "language", "instruct"]
+    },
+    {
+      "recipe_id": "model.glm-ocr-8bit.v1",
+      "recipe_version": 1,
+      "label": "GLM OCR 8-bit",
+      "scope": { "kind": "model", "value": "mlx-community/GLM-OCR-8bit" },
+      "capability": "ocr",
+      "source_kind": "official",
+      "official_source": "https://github.com/zai-org/GLM-OCR",
+      "adapter": { "id": "local.ocr.glm-mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["image", "prompt"],
+      "request_template": { "image": "{{image}}", "prompt": "Text Recognition:" },
+      "load_options": {},
+      "output_mapping": { "kind": "ocr_text", "pointer": "/text" },
+      "supported_parameters": ["prompt"]
+    },
+    {
+      "recipe_id": "model.z-image-turbo.v1",
+      "recipe_version": 1,
+      "label": "Z-Image Turbo 文生图",
+      "scope": { "kind": "family", "value": "z-image" },
+      "capability": "image_gen",
+      "source_kind": "official",
+      "official_source": "https://github.com/Tongyi-MAI/Z-Image",
+      "adapter": { "id": "local.image.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": true },
+      "required_inputs": ["prompt"],
+      "request_template": { "prompt": "{{prompt}}", "size": "256x256", "steps": 3, "seed": 0 },
+      "load_options": {},
+      "output_mapping": { "kind": "image", "pointer": "/data/0" },
+      "supported_parameters": ["size", "steps", "seed"]
+    },
+    {
+      "recipe_id": "model.krea-2-mflux.v1",
+      "recipe_version": 1,
+      "label": "Krea 2 mflux 文生图",
+      "scope": { "kind": "family", "value": "krea-2" },
+      "capability": "image_gen",
+      "source_kind": "reviewed_community",
+      "official_source": "https://github.com/filipstrand/mflux",
+      "adapter": { "id": "local.image.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mflux"], "model_stages": ["instruct"], "inheritable": true },
+      "required_inputs": ["prompt"],
+      "request_template": { "prompt": "{{prompt}}", "size": "1024x1024", "steps": 8, "seed": 0 },
+      "load_options": {},
+      "output_mapping": { "kind": "image", "pointer": "/data/0" },
+      "supported_parameters": ["size", "steps", "seed"]
+    },
+    {
+      "recipe_id": "model.qwen-image.v1",
+      "recipe_version": 1,
+      "label": "Qwen Image 文生图",
+      "scope": { "kind": "family", "value": "qwen-image" },
+      "capability": "image_gen",
+      "source_kind": "official",
+      "official_source": "https://github.com/QwenLM/Qwen-Image",
+      "adapter": { "id": "local.image.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": true },
+      "required_inputs": ["prompt"],
+      "request_template": { "prompt": "{{prompt}}", "size": "1024x1024", "steps": 20, "seed": 0 },
+      "load_options": {},
+      "output_mapping": { "kind": "image", "pointer": "/data/0" },
+      "supported_parameters": ["size", "steps", "seed"]
+    },
+    {
+      "recipe_id": "generic.chat.v1",
+      "recipe_version": 1,
+      "label": "通用对话尝试",
+      "scope": { "kind": "capability", "value": "chat" },
+      "capability": "chat",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.chat.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct", "qat_instruct"], "inheritable": false },
+      "required_inputs": ["messages"],
+      "request_template": { "messages": "{{messages}}", "max_tokens": 32, "temperature": 0.2, "stream": true },
+      "load_options": {},
+      "output_mapping": { "kind": "chat_text", "pointer": "/choices/0/message/content" },
+      "supported_parameters": ["max_tokens", "stream", "temperature"]
+    },
+    {
+      "recipe_id": "generic.chat.gguf.v1",
+      "recipe_version": 1,
+      "label": "通用 GGUF 对话尝试",
+      "scope": { "kind": "capability", "value": "chat" },
+      "capability": "chat",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.chat.gguf", "version": 1 },
+      "compatibility": { "runtime_kinds": ["llama_cpp"], "model_stages": ["instruct", "qat_instruct"], "inheritable": false },
+      "required_inputs": ["messages"],
+      "request_template": { "messages": "{{messages}}", "max_tokens": 32, "temperature": 0.2, "stream": true },
+      "load_options": {},
+      "output_mapping": { "kind": "chat_text", "pointer": "/choices/0/message/content" },
+      "supported_parameters": ["max_tokens", "stream", "temperature"]
+    },
+    {
+      "recipe_id": "generic.translation.v1",
+      "recipe_version": 1,
+      "label": "通用翻译尝试",
+      "scope": { "kind": "capability", "value": "translation" },
+      "capability": "translation",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.translation.hymt2", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["source_language", "target_language", "text"],
+      "request_template": { "source_language": "{{source_language}}", "target_language": "{{target_language}}", "text": "{{text}}" },
+      "load_options": {},
+      "output_mapping": { "kind": "translation_text", "pointer": "/translation" },
+      "supported_parameters": []
+    },
+    {
+      "recipe_id": "generic.embedding.v1",
+      "recipe_version": 1,
+      "label": "通用向量尝试",
+      "scope": { "kind": "capability", "value": "embedding" },
+      "capability": "embedding",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.embedding.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["base", "instruct"], "inheritable": false },
+      "required_inputs": ["text"],
+      "request_template": { "input": "{{text}}", "dimensions": 768 },
+      "load_options": {},
+      "output_mapping": { "kind": "embedding", "pointer": "/data/0/embedding" },
+      "supported_parameters": ["dimensions"]
+    },
+    {
+      "recipe_id": "generic.embedding.gguf.v1",
+      "recipe_version": 1,
+      "label": "通用 GGUF 向量尝试",
+      "scope": { "kind": "capability", "value": "embedding" },
+      "capability": "embedding",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.embedding.gguf", "version": 1 },
+      "compatibility": { "runtime_kinds": ["llama_cpp"], "model_stages": ["base", "instruct"], "inheritable": false },
+      "required_inputs": ["text"],
+      "request_template": { "input": "{{text}}", "dimensions": 768 },
+      "load_options": {},
+      "output_mapping": { "kind": "embedding", "pointer": "/data/0/embedding" },
+      "supported_parameters": ["dimensions"]
+    },
+    {
+      "recipe_id": "generic.ocr.v1",
+      "recipe_version": 1,
+      "label": "本机 OCR 示例",
+      "scope": { "kind": "capability", "value": "ocr" },
+      "capability": "ocr",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.ocr.macos-vision", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx", "system"], "model_stages": ["base", "instruct"], "inheritable": false },
+      "required_inputs": ["image", "prompt"],
+      "request_template": { "image": "{{image}}", "prompt": "Text Recognition:" },
+      "load_options": {},
+      "output_mapping": { "kind": "ocr_text", "pointer": "/text" },
+      "supported_parameters": ["prompt"]
+    },
+    {
+      "recipe_id": "generic.speech.v1",
+      "recipe_version": 1,
+      "label": "通用语音识别示例",
+      "scope": { "kind": "capability", "value": "speech" },
+      "capability": "speech",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.speech.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["audio"],
+      "request_template": { "audio": "{{audio}}", "language": "auto" },
+      "load_options": {},
+      "output_mapping": { "kind": "transcription", "pointer": "/text" },
+      "supported_parameters": ["language"]
+    },
+    {
+      "recipe_id": "generic.tts.v1",
+      "recipe_version": 1,
+      "label": "通用语音合成示例",
+      "scope": { "kind": "capability", "value": "tts" },
+      "capability": "tts",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.tts.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["text"],
+      "request_template": { "input": "{{text}}", "voice": "default", "language": "auto", "instruct": "" },
+      "load_options": {},
+      "output_mapping": { "kind": "audio", "pointer": "/audio" },
+      "supported_parameters": ["voice", "language", "instruct"]
+    },
+    {
+      "recipe_id": "generic.image-gen.v1",
+      "recipe_version": 1,
+      "label": "通用文生图示例",
+      "scope": { "kind": "capability", "value": "image_gen" },
+      "capability": "image_gen",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.image.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx", "mflux"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["prompt"],
+      "request_template": { "prompt": "{{prompt}}", "size": "1024x1024", "steps": 8, "seed": 0 },
+      "load_options": {},
+      "output_mapping": { "kind": "image", "pointer": "/data/0" },
+      "supported_parameters": ["size", "steps", "seed"]
+    },
+    {
+      "recipe_id": "generic.image-to-image.v1",
+      "recipe_version": 1,
+      "label": "通用图生图示例",
+      "scope": { "kind": "capability", "value": "image_to_image" },
+      "capability": "image_to_image",
+      "source_kind": "generic",
+      "official_source": "",
+      "adapter": { "id": "local.image-edit.mlx", "version": 1 },
+      "compatibility": { "runtime_kinds": ["mlx", "mflux"], "model_stages": ["instruct"], "inheritable": false },
+      "required_inputs": ["image", "prompt"],
+      "request_template": { "image": "{{image}}", "prompt": "{{prompt}}", "strength": 0.75, "steps": 8, "seed": 0 },
+      "load_options": {},
+      "output_mapping": { "kind": "image", "pointer": "/data/0" },
+      "supported_parameters": ["strength", "steps", "seed"]
+    }
+  ]
+}
