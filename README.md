@@ -2,6 +2,8 @@
 
 Public distribution of the current signed model index and official recipe package.
 Model weights, credentials and private signing keys are not stored here.
+The repository also carries the separately signed source-neutral model-call
+recipe catalog used by the model debugging and local model-call surfaces.
 
 ## Reading a snapshot
 
@@ -14,11 +16,15 @@ Do not mix files fetched from a moving `main` branch.
 - `omniproxy-recipes.json` lists the official recipe documents.
 - `omniproxy-recipes.ed25519` signs the exact package bytes.
 - `recipes/` contains the referenced recipe documents at the same commit.
+- `model-call-test-recipes.json` contains release-owned remote debug recipes
+  and common local model-call recipes.
+- `model-call-test-recipes.ed25519` signs the exact model-call catalog bytes.
 
 Clients verify signatures using their embedded release public key. Recipe
 documents are pinned by the Git commit; the package signature does not directly
-sign their contents. Distribution does not imply model or recipe compatibility
-has been tested on every device.
+sign their contents. The model-call catalog is a separate schema and signature;
+its presence does not imply model or recipe compatibility has been tested on
+every device.
 
 ## Updates
 
