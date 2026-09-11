@@ -19,12 +19,15 @@ Do not mix files fetched from a moving `main` branch.
 - `model-call-test-recipes.json` contains release-owned remote debug recipes
   and common local model-call recipes.
 - `model-call-test-recipes.ed25519` signs the exact model-call catalog bytes.
+- `generated-model-call-test-recipes.json` contains the generated long-tail
+  model-call recipes bound to fixed Hub revisions.
+- `generated-model-call-test-recipes.ed25519` signs the generated catalog bytes.
 
 Clients verify signatures using their embedded release public key. Recipe
 documents are pinned by the Git commit; the package signature does not directly
 sign their contents. The model-call catalog is a separate schema and signature;
-its presence does not imply model or recipe compatibility has been tested on
-every device.
+the generated catalog has its own schema and signature. Their presence does not
+imply model or recipe compatibility has been tested on every device.
 
 ## Updates
 
